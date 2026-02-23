@@ -314,7 +314,7 @@ body{
 }
 
 .about-text p{
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.7;
   margin: 0 0 18px;
   color: #111;
@@ -715,7 +715,7 @@ section.about.project .about-inner.project-card > .project-text-wide p{
   }
 
   .bg-figure-icon{
-    width: 60vw;
+    width: 40vw;
     max-width: 100%;
     height: auto;
   }
