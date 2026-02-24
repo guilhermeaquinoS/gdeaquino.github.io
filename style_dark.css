@@ -222,6 +222,13 @@ body {
   text-decoration: underline;
 }
 
+#project3 .pub-link,
+#project3 .pub-link:visited,
+#project4 .pub-link,
+#project4 .pub-link:visited {
+  color: #000;
+}
+
 .pub-link:hover {
   opacity: 0.7;
 }
@@ -863,6 +870,10 @@ body {
   .project-links a,
   .project-note a,
   .project-note a:visited,
+  #project3 .pub-link,
+  #project3 .pub-link:visited,
+  #project4 .pub-link,
+  #project4 .pub-link:visited,
   .hero.hero-publications .hero-publications-box a,
   .contact-social-icons a,
   .contact-text-column a {
