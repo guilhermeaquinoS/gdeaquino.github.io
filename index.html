@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Guilherme de Aquino — Fluid dynamics researcher." />
   <title>Guilherme de Aquino</title>
+  <link rel="preload" as="image" href="figures/home_animation/cropped_140.png" fetchpriority="high" />
   <link rel="stylesheet" href="style_dark.css" />
   <link
     rel="stylesheet"
@@ -65,7 +66,16 @@
             data-path="figures/home_animation/cropped_"
             data-ext=".png"
           >
-            <img id="heroFrame" src="figures/home_animation/cropped_100.png" alt="Animated scientific figure" />
+            <img
+              id="heroFrame"
+              src="figures/home_animation/cropped_140.png"
+              alt="Animated scientific figure"
+              width="1500"
+              height="1500"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
           </div>
         </div>
       </div>
@@ -93,13 +103,22 @@
 
         <div class="background-figures">
           <div class="bg-figure">
-            <img src="figures/icon_CFD.png" alt="CFD icon" class="bg-figure-icon" width="512" height="512" loading="lazy" decoding="async" />
+            <picture>
+              <source srcset="figures/icon_CFD.webp" type="image/webp" />
+              <img src="figures/icon_CFD.png" alt="CFD icon" class="bg-figure-icon" width="512" height="512" loading="lazy" decoding="async" />
+            </picture>
           </div>
           <div class="bg-figure">
-            <img src="figures/exp_icon.png" alt="Experimental icon" class="bg-figure-icon" width="512" height="512" loading="lazy" decoding="async" />
+            <picture>
+              <source srcset="figures/exp_icon.webp" type="image/webp" />
+              <img src="figures/exp_icon.png" alt="Experimental icon" class="bg-figure-icon" width="512" height="512" loading="lazy" decoding="async" />
+            </picture>
           </div>
           <div class="bg-figure">
-            <img src="figures/data_icon.png" alt="Data icon" class="bg-figure-icon" width="512" height="512" loading="lazy" decoding="async" />
+            <picture>
+              <source srcset="figures/data_icon.webp" type="image/webp" />
+              <img src="figures/data_icon.png" alt="Data icon" class="bg-figure-icon" width="512" height="512" loading="lazy" decoding="async" />
+            </picture>
           </div>
         </div>
       </div>
@@ -129,7 +148,17 @@
         </div>
 
         <figure class="about-figure">
-          <img src="figures/personal_pic.jpg" alt="Portrait of Guilherme de Aquino" />
+          <picture>
+            <source srcset="figures/personal_pic.webp" type="image/webp" />
+            <img
+              src="figures/personal_pic.jpg"
+              alt="Portrait of Guilherme de Aquino"
+              width="1428"
+              height="1620"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
         </figure>
       </div>
     </section>
@@ -172,10 +201,12 @@
 
       const frameSrc = (n) => `${basePath}${String(n).padStart(pad, '0')}${ext}`;
 
-      for (let i = 0; i < frameCount; i++) {
-        const preloadedImage = new Image();
-        preloadedImage.src = frameSrc(startFrame + i);
-        if (preloadedImage.decode) preloadedImage.decode().catch(() => {});
+      function preloadFrames(start, count) {
+        for (let i = 0; i < count; i++) {
+          const preloadedImage = new Image();
+          preloadedImage.src = frameSrc(start + i);
+          if (preloadedImage.decode) preloadedImage.decode().catch(() => {});
+        }
       }
 
       let lastFrame = -1;
@@ -212,6 +243,16 @@
       updateFrame();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll);
+
+      const preloadCount = Math.min(frameCount, Number(wrapper.dataset.preload || 12));
+      const schedulePreload = () => {
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => preloadFrames(startFrame, preloadCount), { timeout: 1200 });
+          return;
+        }
+        window.setTimeout(() => preloadFrames(startFrame, preloadCount), 800);
+      };
+      window.addEventListener('load', schedulePreload, { once: true });
     })();
   </script>
   <script src="site.js"></script>
